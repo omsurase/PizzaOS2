@@ -1,8 +1,21 @@
-ORG 0x7c00
+ORG 0
 BITS 16
+
+
+jmp 0x7c0:start
 
 ; Print "Hello, World!"
 start:
+
+    cli     ; clear interrupts
+    mov ax, 0x7c0
+    mov ds, ax
+    mov es, ax
+    mov ax, 0x00
+    mov ss, ax
+    mov sp, 0x7C00
+    sti     ; enable interrupts
+
     mov si, message
     call print_string
     jmp $
@@ -28,4 +41,4 @@ message: db 'Hello, World!', 0
 times 510-($-$$) db 0
 
 ; Boot signature
-dw 0xaa55
+dw 0xAA55
